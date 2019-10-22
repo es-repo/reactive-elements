@@ -41,7 +41,9 @@ function letters(letter$) {
     .set(e => e.style.cssText = "position:relative;width:100%;height:100%")
     .state(letter$, (e, v) =>
       elem('div')
-        .set(e => e.style.cssText = `position:absolute;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:1.5em;font-weight:bold;animation:down-and-left ${animDuration}ms;linear`)
+        .set(e => e.style.cssText =
+          `position:absolute;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:1.5em;
+          font-weight:bold;animation:down-and-left ${animDuration}ms;linear`)
         .state(durableValue(v, animDuration - 20), (e, v) => e.innerHTML = v)
         .parent(e));
 }

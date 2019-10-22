@@ -11,6 +11,7 @@
   "author": "Eugene Sirota",
   "license": "ISC",
   "dependencies": {
+    "highlight.js": "^9.15.10",
     "r-elem": "file:../r-elem",
     "rxjs": "^6.5.3"
   },
@@ -22,6 +23,7 @@
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
     "jshint": "^2.10.2",
+    "raw-loader": "^3.1.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
