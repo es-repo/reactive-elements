@@ -75,7 +75,7 @@ function refreshAllButton(loading$) {
 
   const e = elem('a')
     .set(e => e.innerText = 'refresh all')
-    .set(e => e.style.cssText = 'display:inline-block;color:#55c;margin:0.5rem;margin-top:1rem')
+    .set(e => e.style.cssText = 'display:inline-block;color:#55c;margin:0.5rem;')
     .state(loading$, (e, v) => v ? e.removeAttribute('href') : e.href = '')
     .state(loading$, (e, v) => e.style.color = v ? 'lightgrey' : '#55c');
   e.event('refresh', e.click$.preventDefault()
