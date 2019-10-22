@@ -1,27 +1,23 @@
-import { BehaviorSubject, Subject, of, merge, combineLatest, zip } from 'rxjs';
-import { map, mapTo, mergeScan, filter, scan } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of, merge, combineLatest, zip, from } from 'rxjs';
+import { map, mapTo, mergeScan, filter, scan, flatMap } from 'rxjs/operators';
 import elem from './r-elem';
 
 // "Files & Folders" component.
 export default function filesAndFolders() {
-  const seed = {
+  const tree = {
     name: '..', type: 'folder', child: undefined
   };
 
-  const tree$ = new BehaviorSubject(seed);
+  const tree$ = new BehaviorSubject(tree);
 
   const tw = treeView(tree$);
   tw.nodeClick$.
     pipe(
       filter(v => v.type === 'folder' && v.child === undefined),
-      mergeScan((acc, v) =>
-        zip(
-          of(v),
-          randomFilesAndFoldersAsync())
-          .pipe(
-            map(([v, ch]) => { v.child = ch; return v; }),
-            mapTo(acc)),
-        seed))
+      flatMap(v => from(randomFilesAndFoldersAsync())
+        .pipe(
+          map(ch => { v.child = ch; return v; }))),
+      mapTo(tree))
     .subscribe(tree$);
 
   return tw;
