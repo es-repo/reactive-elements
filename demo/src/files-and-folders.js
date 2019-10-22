@@ -14,14 +14,12 @@ export default function filesAndFolders() {
     pipe(
       filter(v => v.type === 'folder' && v.child === undefined),
       mergeScan((acc, v) =>
-        merge(
-          of(acc),
-          zip(
-            of(v),
-            randomFilesAndFoldersAsync())
-            .pipe(
-              map(([v, ch]) => { v.child = ch; v.loading = false; return v; }),
-              mapTo(acc))),
+        zip(
+          of(v),
+          randomFilesAndFoldersAsync())
+          .pipe(
+            map(([v, ch]) => { v.child = ch; return v; }),
+            mapTo(acc)),
         seed))
     .subscribe(tree$);
 
