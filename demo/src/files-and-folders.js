@@ -2,6 +2,7 @@ import { BehaviorSubject, Subject, of, merge, combineLatest, zip } from 'rxjs';
 import { map, mapTo, mergeScan, filter, scan } from 'rxjs/operators';
 import elem from './r-elem';
 
+// "Files & Folders" component.
 export default function filesAndFolders() {
   const seed = {
     name: '..', type: 'folder', child: undefined
