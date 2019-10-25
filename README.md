@@ -34,6 +34,8 @@ Native element's events should be accessed without prior assignation.
 
 - **parent(p)** - Set parent for the element. This function should be called after all calls of **state** function.
 
+- **el** - access the component's element
+
 
 ## Examples
 
