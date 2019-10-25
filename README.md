@@ -10,7 +10,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - Component updates its state as soon as new value emitted from a bound observable. As result no need in special change detection mechanism. 
 
-- Only those attributes, innerText and etc are updated which are bound to the observable via bind function. Component does not re-render. As result no need in Virtual DOM.
+- Only those attributes, innerText and etc are updated which are bound to the observable via bind function. Component does not re-render. As result no need in Virtual DOM to gain good performance.
 
 
 ## API
