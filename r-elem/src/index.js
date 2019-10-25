@@ -11,14 +11,14 @@ export default function elem(tagOrEl) {
   return new Proxy({
     el,
 
-    // Set this element's attributes, inner text with static values.
+    // Set element's attributes, inner text with static values.
     set(setFunc) {
       setFunc(el);
       return this;
     },
 
-    // Bind an observable state to this element's attributes, inner text
-    // or create child elements based on the state.
+    // Bind an observable to element's attributes, inner text
+    // or create child elements based on the observable values.
     //
     // The observable should be hot!
     state($, bind) {
@@ -35,7 +35,7 @@ export default function elem(tagOrEl) {
     // Assign an observable event.
     // 
     // The function takes event name and observables or functions which return observable
-    // and merge all the observables.
+    // and then merge all the observables.
     // The merged observable can be accessed by calling [eventName+'$'].
     event(name, ...create$Or$) {
       const arrayOf$ = create$Or$.map(i => typeof i === 'function' ? i(this) : i);
@@ -51,12 +51,12 @@ export default function elem(tagOrEl) {
       return this;
     },
 
-    // Set this element as parent of child elements.
+    // Set this element as parent of the child elements.
     child(...ch) {
       return this.slotChild(undefined, ...ch);
     },
 
-    // Set a named slot as parent of child elements.
+    // Set a named slot as parent of the child elements.
     slotChild(name, ...ch) {
       const p = slots[name] || el;
       ch.forEach(c => c.parent(p));
@@ -64,14 +64,13 @@ export default function elem(tagOrEl) {
     },
 
     // The same as "slotChildMap" but set this element as parent.
-    childMap(stateArr$, createEl, newSubject) {
-      return this.slotChildMap(undefined, stateArr$, createEl, newSubject);
+    childMap(arr$, createEl, newSubject) {
+      return this.slotChildMap(undefined, arr$, createEl, newSubject);
     },
 
-    // - Take an observable of arrays;
-    // - make an array of observables from each array's element;
+    // - Take an observable of arrays, convert it to an array of observables;
     // - map every observable to an element;
-    // - set a named slot as parent of every mapped element.
+    // - set the named slot as parent of every mapped element.
     // 
     // TODO: the 'newSubject' factory argument is required because of bug in RxJS:
     // https://github.com/ReactiveX/rxjs/issues/5051
@@ -99,6 +98,8 @@ export default function elem(tagOrEl) {
       return this;
     },
 
+    // Set parent for the element.
+    // 
     // If no state is bound then add this element as a child to a parent element immediately.
     // Otherwise:
     // - subscribe to all observable states and make binding to happen;
