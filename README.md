@@ -50,4 +50,4 @@ Native element's events should be accessed without prior assignation.
   return elem('div').child(field, label);
 }
 ```
-- More example on [demo](https://es-repo.github.io/reactive-elements/demo/dist/) page
+- More examples on [demo](https://es-repo.github.io/reactive-elements/demo/dist/) page
