@@ -13,7 +13,7 @@ A JavaScript library for building user interfaces based on observables 🚀
 
 ## API
 
-- **elem(tagOrEl)** - Create a reactive element.
+- **elem(tagOrEl)** - Create a component.
 
 - **set(setFunc)** - Set element's attributes, inner text with static values.
 
