@@ -1,7 +1,6 @@
 # Reactive Elements
 
 A JavaScript library for building user interfaces based on RxJS observables 🚀 
-### [Demo](https://es-repo.github.io/reactive-elements/demo/dist/) 
 
 ## Key features
 
@@ -52,4 +51,4 @@ Native element's events should be accessed without prior assignation.
   return elem('div').child(field, label);
 }
 ```
-- More examples on [demo](https://es-repo.github.io/reactive-elements/demo/dist/) page
+- More examples on **[demo](https://es-repo.github.io/reactive-elements/demo/dist/)** page
