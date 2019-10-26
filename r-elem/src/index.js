@@ -73,7 +73,7 @@ export default function elem(tagOrEl) {
     // - set the named slot as parent of every mapped element.
     // 
     // TODO: the 'newSubject' factory argument is required because of bug in RxJS:
-    // https://github.com/ReactiveX/rxjs/issues/5051
+    // https://github.com/ReactiveX/rxjs/issues/5105
     // Remove the argument as soon as the bug will be fixed.
     slotChildMap(name, arr$, createEl, newSubject) {
       const p = slots[name] || el;
