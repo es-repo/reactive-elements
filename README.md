@@ -32,7 +32,7 @@ Native element's events should be accessed without prior assignation.
 
 - **childMap(arr$, createEl)** - The same as **slotChildMap** but set this element as parent. 
 
-- **slotChildMap(name, arr$, createEl)** - Take an observable of arrays, convert it to an array of observables. Map every such observable to an element. Set the named slot as parent of every mapped element.
+- **slotChildMap(name, arr$, createEl)** - Map the observable of array values to elements. This is used for creation of list of elements. It takes an observable of arrays, converts it to an array of observables. Then maps every such observable to an element. Sets the named slot as parent of every mapped element.
 
 - **parent(p)** - Set parent for the element. This function should be called after all calls of **state** function.
 
