@@ -17,7 +17,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - **elem(tagOrEl)** - Create a component.
 
-- **set(setFunc)** - Set element's attributes, inner text with static values.
+- **set(setFunc)** - Set component root element's attributes, inner text with static values.
 
 - **state($, bind)** - Bind an observable to element's attributes, inner text or create child elements based on the observable values. The observable should be hot!
 
