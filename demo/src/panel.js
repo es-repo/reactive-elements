@@ -1,4 +1,4 @@
-import elem from './r-elem';
+import elem from 'r-elem';
 import { scan } from 'rxjs/operators';
 import codeHighlighter from 'highlight.js';
 

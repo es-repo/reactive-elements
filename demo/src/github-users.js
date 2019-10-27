@@ -1,6 +1,6 @@
 import { forkJoin, BehaviorSubject, Subject, of, merge } from 'rxjs';
 import { map, mapTo, mergeScan, filter, startWith } from 'rxjs/operators';
-import elem from './r-elem';
+import elem from 'r-elem';
 
 // "Github users" component.
 export default function githubUsers() {
@@ -73,15 +73,14 @@ function refreshAllButton(loading$) {
   const loading$Observer = new BehaviorSubject(false);
   loading$.subscribe(loading$Observer);
 
-  const e = elem('a')
+  return elem('a')
     .set(e => e.innerText = 'refresh all')
     .set(e => e.style.cssText = 'display:inline-block;color:#55c;margin:0.5rem;')
     .state(loading$, (e, v) => v ? e.removeAttribute('href') : e.href = '')
-    .state(loading$, (e, v) => e.style.color = v ? 'lightgrey' : '#55c');
-  e.event('refresh', e.click$.preventDefault()
-    .pipe(
-      filter(() => !loading$Observer.getValue())));
-  return e;
+    .state(loading$, (e, v) => e.style.color = v ? 'lightgrey' : '#55c')
+    .event('refresh', e => e.click$.preventDefault()
+      .pipe(
+        filter(() => !loading$Observer.getValue())));
 }
 
 function observables(n) {

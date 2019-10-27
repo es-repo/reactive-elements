@@ -1,6 +1,6 @@
 import { from, zip, interval, concat } from 'rxjs';
 import { repeat, take } from 'rxjs/operators';
-import elem from './r-elem';
+import elem from 'r-elem';
 
 // "Imoji" component.
 export default function imoji() {

@@ -1,6 +1,6 @@
 import { race, interval, BehaviorSubject, Subject } from 'rxjs';
 import { map, pluck, take, repeat, scan, mapTo, startWith } from 'rxjs/operators';
-import elem from './r-elem';
+import elem from 'r-elem';
 
 // "Push color buttons" widget.
 export default function pushColorButtons() {

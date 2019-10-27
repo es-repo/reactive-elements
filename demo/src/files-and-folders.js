@@ -1,14 +1,14 @@
-import { BehaviorSubject, Subject, of, merge, combineLatest, zip, from } from 'rxjs';
-import { map, mapTo, mergeScan, filter, scan, flatMap } from 'rxjs/operators';
-import elem from './r-elem';
+import { BehaviorSubject, Subject, merge, combineLatest, from } from 'rxjs';
+import { map, mapTo, filter, scan, flatMap, startWith } from 'rxjs/operators';
+import elem from 'r-elem';
 
 // "Files & Folders" component.
 export default function filesAndFolders() {
-  const tree = {
+  const seed = {
     name: '..', type: 'folder', child: undefined
   };
 
-  const tree$ = new BehaviorSubject(tree);
+  const tree$ = new BehaviorSubject(seed);
 
   const tw = treeView(tree$);
   tw.nodeClick$.
@@ -17,7 +17,7 @@ export default function filesAndFolders() {
       flatMap(v => from(randomFilesAndFoldersAsync())
         .pipe(
           map(ch => { v.child = ch; return v; }))),
-      mapTo(tree))
+      mapTo(seed))
     .subscribe(tree$);
 
   return tw;
@@ -42,7 +42,7 @@ function treeView(tree$) {
         filter(v => v !== undefined)),
       (subTree$) => {
         const e = treeView(subTree$);
-        e.state(node.isOpen$, (e, v) => e.style.display = v ? 'block' : 'none');
+        e.state(node.isOpen$, (e, v) => e.style.display = v ? '' : 'none');
         e.nodeClick$.subscribe(nodeClick$);
         return e;
       },
@@ -53,9 +53,9 @@ function treeView(tree$) {
 // "Tree node" component.
 function treeNode(tree$) {
 
-  const isOpen$ = new BehaviorSubject(false);
+  const isOpen$ = new Subject();
 
-  const icon$ = combineLatest(tree$, isOpen$,
+  const icon$ = combineLatest(tree$, isOpen$.pipe(startWith(false)),
     (tree, isOpen) => tree.type === 'folder' ? isOpen ? '📂' : '📁' : '📃');
 
   const isFolder$ = tree$.pipe(

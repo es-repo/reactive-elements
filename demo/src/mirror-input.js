@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import elem from './r-elem';
+import elem from 'r-elem';
 
 // "Mirror input" component.
 export default function mirrorInput() {

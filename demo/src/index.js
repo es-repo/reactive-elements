@@ -1,4 +1,4 @@
-import elem from './r-elem';
+import elem from 'r-elem';
 import panel from './panel.js';
 
 import mirrorInput from './mirror-input';

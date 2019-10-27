@@ -67,13 +67,13 @@ function cellView(cell$) {
 function gameResultView(winner$) {
   return elem('div')
     .set(e => e.style.cssText = 'display:flex;justify-content:center;align-items:center;font-weight:bold;margin:0.5rem')
-    .state(winner$, (e, v) => e.innerText = v === undefined ? '' : v === 'draw' ? 'Draw!' : `${v} won!`);
+    .state(winner$, (e, v) => e.innerText = v === undefined ? '' : v === 'draw' ? 'draw!' : `${v} won!`);
 }
 
 // "New game view" component.
 function newGameView(winner$) {
   return elem('button')
-    .set(e => e.innerText = 'New game')
+    .set(e => e.innerText = 'new game')
     .state(winner$, (e, v) => e.style.display = v === undefined ? 'none' : '')
     .event('newClick', e => e.click$);
 }

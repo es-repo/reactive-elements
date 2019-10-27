@@ -1,7 +1,7 @@
 import { merge } from 'rxjs';
 import { mapTo, scan, delay, startWith } from 'rxjs/operators';
 import { durableValue } from './rxjs-operators';
-import elem from './r-elem';
+import elem from 'r-elem';
 
 const animDuration = 2000;
 
