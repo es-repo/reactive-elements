@@ -57,9 +57,11 @@ function userItem(user$) {
           elem('img')
             .set(e => e.style.cssText = '1width:32px;height:32px;margin:0.5rem;')
             .state(user$.pipe(filter(v => v !== undefined)), (e, v) => e.src = v.avatar_url),
-          elem('div')
-            .set(e => e.style.cssText = 'width:7rem')
-            .state(user$.pipe(filter(v => v !== undefined)), (e, v) => e.innerText = v.login)),
+          elem('a')
+            .set(e => e.style.cssText = 'width:7rem;color:#555')
+            .set(e => e.target = '_blank')
+            .state(user$.pipe(filter(v => v !== undefined)), (e, v) => e.innerText = v.login)
+            .state(user$.pipe(filter(v => v !== undefined)), (e, v) => e.href = v.html_url)),
       refreshButton);
 
   return elem('div')
@@ -119,7 +121,7 @@ function getUsersIterator() {
   }
 
   let buffer = [];
-  let url = 'https://api.github.com/users?client_id=919316a744c2f52095fc&client_secret=58a8f8259a1d62df8f9a6042b03b7a2cc7a9923f&per_page=9';
+  let url = 'https://api.github.com/users?client_id=919316a744c2f52095fc&client_secret=58a8f8259a1d62df8f9a6042b03b7a2cc7a9923f&per_page=11';
   let request = null;
   let index = 0;
   const doSwap = index => index >= buffer.length && request === null;
