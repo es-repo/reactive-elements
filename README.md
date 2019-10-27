@@ -6,7 +6,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - Observables are inputs of components, observables are outputs via events.
 
-- No explicit component life-cycle. Component's life time is defined by its bound observables. A component's root element is added to the document when any bound observable starts to emit values and removed from the document when all bound observables are completed. All subscriptions to element's event observables are automatically unsubscribed.
+- No explicit component life-cycle. Component's life time is defined by its bound observables. A component's element is added to the document when any bound observable starts to emit values and removed from the document when all bound observables are completed. All subscriptions to element's event observables are automatically unsubscribed.
 
 - Component updates its state as soon as new value emitted from a bound observable. As result no need in special change detection mechanism. 
 
@@ -17,9 +17,9 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - **elem(tagOrEl)** - Create a component.
 
-- **set(setFunc)** - Set component root element's attributes, inner text with static values.
+- **set(setFunc)** - Set component element's attributes, inner text with static values.
 
-- **state($, bind)** - Bind an observable to element's attributes, inner text or create child elements based on the observable values. The observable should be hot!
+- **state($, bind)** - Bind an observable to component element's attributes, inner text or create child elements based on the observable values. The observable should be hot!
 
 - **event(name, ...create$Or$)** - Assign an observable event. The function takes event name and observables or functions which return observable and then merge all the observables. The merged observable can be accessed by calling [eventName+'$'].
 Native element's events should be accessed without prior assignation. 
