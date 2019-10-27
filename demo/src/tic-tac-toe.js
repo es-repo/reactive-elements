@@ -56,13 +56,11 @@ function rowView(row$) {
 function cellView(cell$) {
   const cell$Observer = new BehaviorSubject(undefined);
   cell$.subscribe(cell$Observer);
-  const view = elem('div')
+  return elem('div')
     .set(e => e.style.cssText = 'border:1px solid black;display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;cursor:pointer')
-    .state(cell$, (e, v) => e.innerText = v === undefined ? '' : v);
-
-  return view
-    .event('cellClick',
-      view.click$.pipe(map(() => cell$Observer.value)));
+    .state(cell$, (e, v) => e.innerText = v === undefined ? '' : v)
+    .event('cellClick', e =>
+      e.click$.pipe(map(() => cell$Observer.value)));
 }
 
 // "Game result view" component.
@@ -74,11 +72,10 @@ function gameResultView(winner$) {
 
 // "New game view" component.
 function newGameView(winner$) {
-  const view = elem('button')
+  return elem('button')
     .set(e => e.innerText = 'New game')
-    .state(winner$, (e, v) => e.style.display = v === undefined ? 'none' : '');
-  view.event('newClick', view.click$);
-  return view;
+    .state(winner$, (e, v) => e.style.display = v === undefined ? 'none' : '')
+    .event('newClick', e => e.click$);
 }
 
 function observables() {
