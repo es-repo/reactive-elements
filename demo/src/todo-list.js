@@ -71,6 +71,7 @@ function todoItem(item$) {
     );
 }
 
+// "Add todo item" component.
 function addTodoItem() {
 
   const input = elem('input').

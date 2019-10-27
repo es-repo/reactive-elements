@@ -19,6 +19,9 @@ import githubUsersSourceCode from '!!raw-loader!./github-users.js';
 import filesAndFolders from './files-and-folders';
 import filesAndFoldersSourceCode from '!!raw-loader!./files-and-folders.js';
 
+import ticTacToe from './tic-tac-toe';
+import ticTacToeSourceCode from '!!raw-loader!./tic-tac-toe.js';
+
 import imoji from './imoji';
 
 import 'highlight.js/styles/dracula.css';
@@ -66,6 +69,10 @@ elem(document.body)
     panel('Files & Folders', filesAndFoldersSourceCode)
       .bodyChild(
         filesAndFolders()),
+
+    panel('Tic Tac Toe', ticTacToeSourceCode)
+      .bodyChild(
+        ticTacToe()),
 
     imoji()
   );
