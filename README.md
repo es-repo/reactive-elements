@@ -6,7 +6,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - Observables are inputs of components, observables are outputs via events.
 
-- No implicit component life-cycle. A component's element is added to the document when any bound observable starts to emit values and removed from the document when all bound observables are completed. All subscriptions to element's event observables are automatically unsubscribed.
+- No explicit component life-cycle. A component's element is added to the document when any bound observable starts to emit values and removed from the document when all bound observables are completed. All subscriptions to element's event observables are automatically unsubscribed.
 
 - Component updates its state as soon as new value emitted from a bound observable. As result no need in special change detection mechanism. 
 
