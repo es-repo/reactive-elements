@@ -12,7 +12,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - Only those attributes, innerText and etc which are bound to the observable via bind function are updated. Component itself does not need to re-render. As result no need in Virtual DOM to gain good performance.
 
-- Rendering lists doesn't require "key" property.
+- Rendering of lists doesn't require "key" property.
 
 
 ## API
