@@ -82,41 +82,25 @@ function observables() {
 
   function getWinner(board) {
 
-    for (let i = 0; i < board.length; i++) {
-      let hasWinner = true;
-      for (let j = 1; j < board[i].length; j++) {
-        if (board[i][0] === undefined || board[i][j] !== board[i][0]) {
-          hasWinner = false;
-          break;
-        }
-      }
-      if (hasWinner) {
-        return board[i][0];
-      }
-    }
-
-    for (let i = 0; i < board.length; i++) {
-      let hasWinner = true;
-      for (let j = 1; j < board[i].length; j++) {
-        if (board[0][i] === undefined || board[j][i] !== board[0][i]) {
-          hasWinner = false;
-          break;
-        }
-      }
-      if (hasWinner) {
-        return board[0][i];
+    const flatBoard = board.flat();
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (flatBoard[a] && flatBoard[a] === flatBoard[b] && flatBoard[a] === flatBoard[c]) {
+        return flatBoard[a];
       }
     }
 
-    const diag1 = board.map((r, i) => board[i][i]);
-    if (diag1.every(c => c === board[0][0]))
-      return board[0][0];
-
-    const diag2 = board.map((r, i) => board[i][board.length - i - 1]);
-    if (diag2.every(c => c === board[0][board.length - 1]))
-      return board[0][board.length - 1];
-
-    if (board.flat().every(c => c !== undefined)) {
+    if (flatBoard.every(c => c !== undefined)) {
       return 'draw';
     }
 
@@ -139,11 +123,7 @@ function observables() {
 
   const seed = () => ({
     winner: undefined,
-    board: [
-      [undefined, undefined, undefined],
-      [undefined, undefined, undefined],
-      [undefined, undefined, undefined]
-    ]
+    board: Array(3).fill(undefined).map(() => Array(3).fill(undefined))
   });
 
   const game$ = new BehaviorSubject(seed());
