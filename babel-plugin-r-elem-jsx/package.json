@@ -1,0 +1,21 @@
+{
+  "name": "babel-plugin-r-elem-jsx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-plugin-tester": "^7.0.1",
+    "eslint": "^6.6.0",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "@babel/helper-module-imports": "^7.0.0",
+    "@babel/plugin-syntax-jsx": "^7.2.0"
+  }
+}
