@@ -56,4 +56,11 @@ Native element's events should be accessed without prior assignation.
   return elem('div').child(field, label);
 }
 ```
+
+- Attach a component to document's body:
+```
+const comp = elem('div').state(interval(1000), (e, v) => e.innerText = v);
+elem(document.body).child(comp);
+```
+
 - More examples on **[demo](https://es-repo.github.io/reactive-elements/demo/dist/)** page.
