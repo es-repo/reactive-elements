@@ -36,9 +36,9 @@ module.exports = babel => {
 
   function setCallExpression(sourceExpr, node) {
 
-    const nonObservableAttributes = a => !(a.name.name.endsWith("$"));
+    const nonStatefulAttributes = a => !(a.name.name.startsWith("$"));
     const filteredAttrs = node.openingElement.attributes
-      .filter(nonObservableAttributes);
+      .filter(nonStatefulAttributes);
 
     if (filteredAttrs.length === 0) {
       return sourceExpr;
@@ -49,8 +49,7 @@ module.exports = babel => {
         sourceExpr,
         t.identifier('set')
       ),
-      [t.functionExpression(
-        t.identifier(""),
+      [t.arrowFunctionExpression(
         [t.identifier("e")],
         t.blockStatement(
           filteredAttrs.map(attr =>
@@ -72,11 +71,11 @@ module.exports = babel => {
 
   function stateCallExpression(sourceExpr, node) {
 
-    const observableAttributes = a => a.name.name.endsWith("$");
+    const statefulAttributes = a => a.name.name.startsWith("$");
     const filteredAttrs = node.openingElement.attributes
-      .filter(observableAttributes);
+      .filter(statefulAttributes);
 
-    const attrName = a => a.name.name.slice(0, a.name.name.length - 1)
+    const attrName = a => a.name.name.slice(1);
 
     return filteredAttrs.reduce((acc, attr) =>
       t.callExpression(
@@ -89,8 +88,7 @@ module.exports = babel => {
             ? attr.value.expression
             : (attr.value === null ? t.booleanLiteral(true) : attr.value),
 
-          t.functionExpression(
-            t.identifier(""),
+          t.arrowFunctionExpression(
             [
               t.identifier("e"),
               t.identifier("v"),
@@ -125,8 +123,16 @@ module.exports = babel => {
     expr = childCallExpression(expr, node);
     // TODO: style attribute
     // TODO: class attribute
-    // TODO: innerHTML attribute
     // TODO: isJSXSpreadAttribute
+    //
+    // TODO: ref attribute
+    //   - ref must be unique 
+    //   - ref must be string
+    //   - one ref per element
+
+    // TODO: event accessing
+    // TODO: event creating
+    // TODO: change stateful attributes from "name$" to "$name"
 
     // TODO: in lib, add child with primitive arguments, like "string", "int", "boolean"
 
