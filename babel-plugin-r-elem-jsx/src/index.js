@@ -5,7 +5,7 @@ module.exports = babel => {
 
   const { types: t } = babel;
 
-  function childCallExpression(sourceExpr, node) {
+  function childCallExpression(sourceExpr, node, refs) {
 
     const noWhiteSpaceTextNodeFilter = n => !(t.isJSXText(n) && n.value.trim() === "");
     const noEmptyExpressionNodeFilter = n => !(t.isJSXExpressionContainer(n) && t.isJSXEmptyExpression(n.expression));
@@ -26,7 +26,7 @@ module.exports = babel => {
       filteredChildren.map(
         n => {
           switch (n.type) {
-            case "JSXElement": return elemExpression(n);
+            case "JSXElement": return elemExpression(n, refs);
             case "JSXText": return t.stringLiteral(reduceWhiteSpaces(n.value));
             case "JSXExpressionContainer": return n.expression;
             default: throw new Error(`Unsupported JSX child node type: ${n.type}`);
@@ -37,8 +37,10 @@ module.exports = babel => {
   function setCallExpression(sourceExpr, node) {
 
     const nonStatefulAttributes = a => !(a.name.name.startsWith("$"));
+    const nonRefAttribute = a => a.name.name !== "ref";
     const filteredAttrs = node.openingElement.attributes
-      .filter(nonStatefulAttributes);
+      .filter(nonStatefulAttributes)
+      .filter(nonRefAttribute);
 
     if (filteredAttrs.length === 0) {
       return sourceExpr;
@@ -109,30 +111,40 @@ module.exports = babel => {
       ), sourceExpr);
   }
 
-  function elemExpression(node) {
+  function elemExpression(node, refs) {
 
     const tag = node.openingElement.name.name;
 
     let expr = t.callExpression(
       t.identifier('elem'),
       [t.stringLiteral(tag)]
-    )
+    );
+
+    const refAttr = node.openingElement.attributes
+      .filter(a => a.name.name === "ref")[0];
+
+    if (refAttr !== undefined) {
+      const ref = t.isJSXExpressionContainer(refAttr.value)
+        ? refAttr.value.expression
+        : refAttr.value;
+
+      refs.push({ ref, expr });
+      expr = t.memberExpression(
+        t.identifier("ref"),
+        ref,
+        true);
+    }
 
     expr = setCallExpression(expr, node);
     expr = stateCallExpression(expr, node);
-    expr = childCallExpression(expr, node);
+    expr = childCallExpression(expr, node, refs);
+
     // TODO: style attribute
     // TODO: class attribute
     // TODO: isJSXSpreadAttribute
-    //
-    // TODO: ref attribute
-    //   - ref must be unique 
-    //   - ref must be string
-    //   - one ref per element
 
     // TODO: event accessing
     // TODO: event creating
-    // TODO: change stateful attributes from "name$" to "$name"
 
     // TODO: in lib, add child with primitive arguments, like "string", "int", "boolean"
 
@@ -144,7 +156,43 @@ module.exports = babel => {
     inherits: SyntaxJSX,
     visitor: {
       JSXElement: path => {
-        path.replaceWith(elemExpression(path.node))
+        const refs = [];
+        let expr = elemExpression(path.node, refs);
+
+        if (refs.length > 0) {
+          expr = t.callExpression(
+            t.functionExpression(
+              null,
+              [],
+              t.blockStatement(
+                [
+                  t.variableDeclaration(
+                    "const",
+                    [
+                      t.variableDeclarator(
+                        t.identifier("ref"),
+                        t.arrayExpression([])
+                      )
+                    ]),
+
+                  ...refs
+                    .map(r => t.expressionStatement(
+                      t.assignmentExpression(
+                        "=",
+                        t.memberExpression(
+                          t.identifier("ref"),
+                          r.ref,
+                          true
+                        ),
+                        r.expr)
+                    )),
+                  t.returnStatement(expr)
+                ]
+              )),
+            []);
+        }
+
+        path.replaceWith(expr)
       },
       Program: {
         exit: path => {
