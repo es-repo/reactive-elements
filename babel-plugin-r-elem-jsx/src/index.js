@@ -37,9 +37,11 @@ module.exports = babel => {
   function setCallExpression(sourceExpr, node) {
 
     const nonStatefulAttributes = a => !(a.name.name.startsWith("$"));
+    const nonEventAttributes = a => !(a.name.name.endsWith("$"));
     const nonRefAttribute = a => a.name.name !== "ref";
     const filteredAttrs = node.openingElement.attributes
       .filter(nonStatefulAttributes)
+      .filter(nonEventAttributes)
       .filter(nonRefAttribute);
 
     if (filteredAttrs.length === 0) {
@@ -111,6 +113,29 @@ module.exports = babel => {
       ), sourceExpr);
   }
 
+  function eventCallExpression(sourceExpr, node) {
+
+    const eventAttributes = a => a.name.name.endsWith("$");
+    const jsxExpressionValueAttributes = a => t.isJSXExpressionContainer(a.value);
+    const filteredAttrs = node.openingElement.attributes
+      .filter(eventAttributes)
+      .filter(jsxExpressionValueAttributes);
+
+    const eventName = a => a.name.name;
+
+    return filteredAttrs.reduce((acc, attr) =>
+      t.callExpression(
+        t.memberExpression(
+          acc,
+          t.identifier('event')
+        ),
+        [
+          t.stringLiteral(eventName(attr)),
+          attr.value.expression
+        ]
+      ), sourceExpr);
+  }
+
   function elemExpression(node, refs) {
 
     const tag = node.openingElement.name.name;
@@ -137,14 +162,12 @@ module.exports = babel => {
 
     expr = setCallExpression(expr, node);
     expr = stateCallExpression(expr, node);
+    expr = eventCallExpression(expr, node);
     expr = childCallExpression(expr, node, refs);
 
     // TODO: style attribute
     // TODO: class attribute
     // TODO: isJSXSpreadAttribute
-
-    // TODO: event accessing
-    // TODO: event creating
 
     // TODO: in lib, add child with primitive arguments, like "string", "int", "boolean"
 
