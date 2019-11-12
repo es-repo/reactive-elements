@@ -12,7 +12,7 @@ A JavaScript library for building user interfaces based on RxJS observables 🚀
 
 - Only those attributes, innerText and etc which are bound to the observable via bind function are updated. Component itself does not need to re-render. As result no need in Virtual DOM to gain good performance.
 
-- Rendering of lists doesn't require "key" property.
+- Rendering of lists doesn't require "key" property like in other libraries for cresting UI components.
 
 
 ## API
@@ -56,4 +56,11 @@ Native element's events should be accessed without prior assignation.
   return elem('div').child(field, label);
 }
 ```
+
+- Attach a component to document's body:
+```
+const comp = elem('div').state(interval(1000), (e, v) => e.innerText = v);
+elem(document.body).child(comp);
+```
+
 - More examples on **[demo](https://es-repo.github.io/reactive-elements/demo/dist/)** page.
