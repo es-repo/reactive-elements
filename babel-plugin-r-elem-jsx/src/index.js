@@ -34,6 +34,107 @@ module.exports = babel => {
         }));
   }
 
+  function attributeAssignmentExpression(attrName, attrValue) {
+    return attrName === "style"
+      ? styleAttributeAssignmentExpression(attrValue)
+      : t.expressionStatement(
+        t.assignmentExpression(
+          "=",
+          t.memberExpression(
+            t.identifier("e"),
+            t.identifier(attrName)
+          ),
+          t.isJSXExpressionContainer(attrValue)
+            ? attrValue.expression
+            : (attrValue === null ? t.booleanLiteral(true) : attrValue))
+      );
+  }
+
+  function styleAttributeAssignmentExpression(attrValue) {
+    if (t.isStringLiteral(attrValue)) { 
+      return setStyleAttributeExpression(attrValue);
+    }
+
+    let expr = setStyleAttributeConditionallyExpression(
+      t.isJSXExpressionContainer(attrValue)
+        ? attrValue.expression
+        : attrValue
+    );
+
+    if (t.isJSXExpressionContainer(attrValue)) {
+      expr = t.expressionStatement(
+        t.callExpression(
+          t.functionExpression(null, [t.identifier("v")],
+            t.blockStatement([
+              expr
+            ])),
+          [attrValue.expression]
+        ));
+    }
+
+    return expr;
+  }
+
+  function setStyleAttributeConditionallyExpression(){
+    return t.ifStatement(
+
+      t.binaryExpression(
+        "===",
+        t.unaryExpression(
+          "typeof",
+          t.identifier("v")),
+        t.stringLiteral("string")),
+
+      setStyleAttributeExpression(t.identifier("v")),
+
+      t.expressionStatement(
+        t.callExpression(
+          t.memberExpression(
+            t.callExpression(
+              t.memberExpression(
+                t.identifier("Object"),
+                t.identifier("keys")),
+              [t.identifier("v")]
+            ),
+            t.identifier("forEach")
+          ),
+          [
+            t.arrowFunctionExpression(
+              [t.identifier("i")],
+              t.assignmentExpression("=",
+                t.memberExpression(
+                  t.memberExpression(
+                    t.identifier("e"),
+                    t.identifier("style")
+                  ),
+                  t.identifier("i"),
+                  true
+                ),
+                t.memberExpression(
+                  t.identifier("v"),
+                  t.identifier("i"),
+                  true
+                ))
+            )
+          ]
+        )
+      )
+    )
+  }
+
+  function setStyleAttributeExpression(attrValue) {
+    return t.expressionStatement(
+      t.callExpression(
+        t.memberExpression(
+          t.identifier("e"),
+          t.identifier("setAttribute")
+        ),
+        [
+          t.stringLiteral("style"),
+          attrValue
+        ]));
+  }
+
   function setCallExpression(sourceExpr, node) {
 
     const nonStatefulAttributes = a => !(a.name.name.startsWith("$"));
@@ -57,18 +158,10 @@ module.exports = babel => {
         [t.identifier("e")],
         t.blockStatement(
           filteredAttrs.map(attr =>
-            t.expressionStatement(
-              t.assignmentExpression(
-                "=",
-                t.memberExpression(
-                  t.identifier("e"),
-                  t.identifier(attr.name.name)
-                ),
-                t.isJSXExpressionContainer(attr.value)
-                  ? attr.value.expression
-                  : (attr.value === null ? t.booleanLiteral(true) : attr.value))
-            ))
-        )
+            attributeAssignmentExpression(
+              attr.name.name,
+              attr.value)
+          ))
       )]
     );
   }
@@ -99,15 +192,9 @@ module.exports = babel => {
             ],
             t.blockStatement(
               [
-                t.expressionStatement(
-                  t.assignmentExpression(
-                    "=",
-                    t.memberExpression(
-                      t.identifier("e"),
-                      t.identifier(attrName(attr))
-                    ),
-                    t.identifier("v")
-                  ))
+                attributeAssignmentExpression(
+                  attrName(attr),
+                  t.identifier("v"))
               ]))
         ]
       ), sourceExpr);
@@ -165,9 +252,9 @@ module.exports = babel => {
     expr = eventCallExpression(expr, node);
     expr = childCallExpression(expr, node, refs);
 
-    // TODO: style attribute
     // TODO: class attribute
     // TODO: isJSXSpreadAttribute
+    // TODO: support kebab case attributes, like "data-value"
 
     // TODO: in lib, add child with primitive arguments, like "string", "int", "boolean"
 
