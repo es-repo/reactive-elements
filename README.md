@@ -28,9 +28,9 @@ Native element's events should be accessed without prior assignation.
 
 - **slot(name, slotElem)** - Add a named slot element.
 
-- **child(...ch)** - Set this element as parent of the child elements.
+- **child(...ch)** - Set this element as parent of the child elements. If a child is not an "elem" value then a text node will be created with the value.toString() content.
 
-- **slotChild(name, ...ch)** - Set a named slot as parent of the child elements.
+- **slotChild(name, ...ch)** - Set a named slot as parent of the child elements. If a child is not an "elem" value then a text node will be created with the value.toString() content.
 
 - **childMap(arr$, createEl)** - The same as **slotChildMap** but set this element as parent. 
 
