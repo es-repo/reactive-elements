@@ -61,7 +61,7 @@ export default function elem(tagOrEl) {
     // If a child is not an "elem" value then a text node will be created with the value.toString() content.
     slotChild(name, ...ch) {
       const p = slots[name] || el;
-      ch
+      ch.flat()
         .filter(c => c !== undefined && c !== null && c !== "")
         .forEach(c => {
           if (isElem(c)) 

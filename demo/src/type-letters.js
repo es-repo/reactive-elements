@@ -72,7 +72,7 @@ function keyboard() {
   return elem('div')
     .set(e => e.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:space-around;margin-top:2rem')
     .child(
-      ...letterButtons,
+      letterButtons,
       clearButton)
     .event('letter', letter$)
     .event('clear', clearButton.click$.pipe(mapTo(undefined)));
