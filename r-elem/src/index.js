@@ -57,9 +57,18 @@ export default function elem(tagOrEl) {
     },
 
     // Set a named slot as parent of the child elements.
+    // If a child is not an element but a string, number, date or other value
+    // then a text node will be created with the value.toString() content.
     slotChild(name, ...ch) {
       const p = slots[name] || el;
-      ch.forEach(c => c.parent(p));
+      ch
+        .filter(c => c !== undefined && c !== null && c !== "")
+        .forEach(c => {
+          if (isElem(c)) 
+            c.parent(p);
+          else 
+            p.appendChild(document.createTextNode(c.toString()));
+        });
       return this;
     },
 
@@ -156,7 +165,10 @@ export default function elem(tagOrEl) {
     });
 }
 
-
+function isElem(o) {
+  // Silly check but enough for now.
+  return o.parent !== undefined && o.state !== undefined;
+}
 
 
 
