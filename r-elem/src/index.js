@@ -52,13 +52,13 @@ export default function elem(tagOrEl) {
     },
 
     // Set this element as parent of the child elements.
+    // If a child is not an "elem" value then a text node will be created with the value.toString() content.
     child(...ch) {
       return this.slotChild(undefined, ...ch);
     },
 
     // Set a named slot as parent of the child elements.
-    // If a child is not an element but a string, number, date or other value
-    // then a text node will be created with the value.toString() content.
+    // If a child is not an "elem" value then a text node will be created with the value.toString() content.
     slotChild(name, ...ch) {
       const p = slots[name] || el;
       ch
