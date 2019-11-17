@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "sideEffects": false,
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "Eugene Sirota",
   "license": "MIT",
