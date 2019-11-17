@@ -166,8 +166,7 @@ export default function elem(tagOrEl) {
 }
 
 function isElem(o) {
-  // Silly check but enough for now.
-  return o.parent !== undefined && o.state !== undefined;
+  return o !== undefined && o !== null && typeof o.parent === "function" && typeof o.state === "function";
 }
 
 
