@@ -1,14 +1,14 @@
 {
   "name": "babel-plugin-r-elem-jsx",
+  "description": "Babel plugin to transform JSX for Reactive Elements",
   "version": "1.0.0",
-  "description": "",
   "main": "src/index.js",
   "sideEffects": false,
   "scripts": {
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Eugene Sirota",
+  "license": "MIT",
   "devDependencies": {
     "babel-plugin-tester": "^7.0.1",
     "eslint": "^6.6.0",
