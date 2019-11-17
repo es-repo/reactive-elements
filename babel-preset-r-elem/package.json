@@ -1,0 +1,21 @@
+{
+  "name": "babel-preset-my-awesome-preset",
+  "description": "Babel preset to transform JSX for Reactive Elements",
+  "version": "1.0.0",
+  "author": "Eugene Sirota",
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "babel-plugin-r-elem-jsx": "file:../babel-plugin-r-elem-jsx"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "eslint": "^6.6.0"
+  }
+}
